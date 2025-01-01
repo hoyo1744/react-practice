@@ -11,12 +11,19 @@
     const root = document.getElementById("root");
 
 
+    // counter가 바뀌면 rerender가 된다.
     function App(){
         const [counter, setCounter] = React.useState(0);
         const onClick = () => {
             //  useState의 두번째 함수에서 알아서 저장하고 렌더링해준다.
-            setCounter(counter + 1);
+            // 이건 새로운 값을 가져와서 업데이트할때
+            // setCounter(counter + 1);
+            // 실행되는 거고 current인 경우에는 매번 setCounter함수가 재실행될 때마다 업데이트된 최신 상태 변수를 인자로 제공해주기 때문에 반영이 즉각적으로 이루어졌다고 이해했습니다.
+            setCounter((current) => counter + 1);
+
         };
+        console.log("rendered");
+        console.log(counter);
 
         return (
             <div>
