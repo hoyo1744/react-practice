@@ -8,10 +8,23 @@
 </body>
 <script>
     const root = document.getElementById("root");
-
     // id, property, content
-    const span = React.createElement("span", {id: "sexy-span", style :{color:"red"}}, "Hello I'm a span");
-    ReactDOM.render(span, root);
+    const h3 = React.createElement("h3", {
+        id:"title",
+        onMouseEnter: () => console.log("mouse enter"),
+    }, "Hello I'm a span");
+
+    // property 자리에 event listner 추가
+    const btn = React.createElement("button", {
+        onClick: () => console.log("im clicked"),
+        style: {
+            backgroundColor: "tomato",
+        }
+    }, "Click me");
+    const container = React.createElement("div", null, [h3, btn]);
+
+
+    ReactDOM.render(container, root);
 </script>
 
 
