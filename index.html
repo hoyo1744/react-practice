@@ -8,30 +8,29 @@
 
 </body>
 <script type="text/babel">
-    const root = document.getElementById("root");
-
 
     // counter가 바뀌면 rerender가 된다.
     function App(){
-        const [counter, setCounter] = React.useState(0);
-        const onClick = () => {
-            //  useState의 두번째 함수에서 알아서 저장하고 렌더링해준다.
-            // 이건 새로운 값을 가져와서 업데이트할때
-            // setCounter(counter + 1);
-            // 실행되는 거고 current인 경우에는 매번 setCounter함수가 재실행될 때마다 업데이트된 최신 상태 변수를 인자로 제공해주기 때문에 반영이 즉각적으로 이루어졌다고 이해했습니다.
-            setCounter((current) => counter + 1);
+        const [minutes, setMinutes] = React.useState(0);
 
+        // 자바스크립트와 같기 때문에 input event가 넘어온다.
+        const onChange = (event) => {
+            setMinutes(event.target.value);
         };
-        console.log("rendered");
-        console.log(counter);
 
         return (
             <div>
-                <h3>Total clicks: {counter}</h3>
-                <button onClick={onClick}>Click me</button>
-            </div>);
+                <h1>Super Converter</h1>
+                <label htmlFor="minutes" >Minutes</label>
+                <input value={minutes} id="minutes" placeholder="Minutes" type="number" onChange={onChange}/>
+                <h4>You want to convert {minutes}</h4>
+                <label htmlFor="hours">Hours</label>
+                <input id="hours" placeholder="Hours" type="number"/>
+            </div>
+        )
     }
 
+    const root = document.getElementById('root');
 
     ReactDOM.render(<App/>, root);
 
