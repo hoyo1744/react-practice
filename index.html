@@ -12,21 +12,16 @@
 
 
     function App(){
-        const data = React.useState(0);
-        console.log(data);
-        const [counter, modifier] = data;
-        // 배열 첫번째 인덱스 : data
-        // 배열 두번째 인덱스 : data값을 바꿀수 있는 함수 --> 이 2개의 값이 이전에 만들었던 countUp 함수를 대체함.
-        // [
-        //     0,
-        //     null
-        // ]
-
+        const [counter, setCounter] = React.useState(0);
+        const onClick = () => {
+            //  useState의 두번째 함수에서 알아서 저장하고 렌더링해준다.
+            setCounter(counter + 1);
+        };
 
         return (
             <div>
                 <h3>Total clicks: {counter}</h3>
-                <button onClick>Click me</button>
+                <button onClick={onClick}>Click me</button>
             </div>);
     }
 
