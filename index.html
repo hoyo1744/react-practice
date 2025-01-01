@@ -9,25 +9,29 @@
 </body>
 <script type="text/babel">
     const root = document.getElementById("root");
-    let counter = 0;
 
-    function countUp(){
-        counter = counter + 1;
-        // 클릭할때 마다 재 랜더링될 수 있도록
-        render();
 
+    function App(){
+        const data = React.useState(0);
+        console.log(data);
+        const [counter, modifier] = data;
+        // 배열 첫번째 인덱스 : data
+        // 배열 두번째 인덱스 : data값을 바꿀수 있는 함수 --> 이 2개의 값이 이전에 만들었던 countUp 함수를 대체함.
+        // [
+        //     0,
+        //     null
+        // ]
+
+
+        return (
+            <div>
+                <h3>Total clicks: {counter}</h3>
+                <button onClick>Click me</button>
+            </div>);
     }
 
-    function render(){
-        ReactDOM.render(<Container/>, root);
-    }
-    const Container = () => (<div>
-        <h3>Total clicks: {counter}</h3>
-        <button onClick={countUp}>Click me</button>
-    </div>);
 
-
-    render();
+    ReactDOM.render(<App/>, root);
 
 </script>
 
