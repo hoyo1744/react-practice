@@ -13,21 +13,34 @@
     // jsx, Babel이 웹브라우저가 JSX를 인식할수있도록 변환해줌.
     // 변환기를 설치해줘야함.
 
-    const Button = (<button style={{backgroundColor: "tomato"}} onClick={
+    // 함수로 만들어줘야 아래의 Container에 포함시킬 수 있다.
+    // arrow function
+    const Button = () => (<button style={{backgroundColor: "tomato"}} onClick={
         () => console.log("im clicked")}>Click me
     </button>);
 
-    const Title = (
+    const Title = () =>  (
         <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
             Hello I'm a span
         </h3>
     );
 
 
-    const container = React.createElement("div", null, [Title, Button]);
+    // const container = React.createElement("div", null, [Title, Button]);
+    // 아래의 <Title/> ==> JSX 태그를 그대로 넣는것과 같은 효과임.
+    // 컴포넌트는 반드시 첫번째 글자가 대문자 여야함. 소문자면 html로 인식한다.
+    // 따라서, 우리가 직접만든 element는 대문자로 시작해야함.
+    // 동일한 코드
+    // <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
+    //     Hello I'm a span
+    // </h3>
+    const Container = () => (<div>
+        <Title/>
+        <Button/>
+    </div>);
 
 
-    ReactDOM.render(container, root);
+    ReactDOM.render(<Container/>, root);
 </script>
 
 
