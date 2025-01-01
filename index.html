@@ -11,15 +11,22 @@
 
     // counter가 바뀌면 rerender가 된다.
     function App(){
-        const [minutes, setMinutes] = React.useState(0);
+        // useState에 들어가는 값은 기본값을 의미함.
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] = React.useState(false);
 
         // 자바스크립트와 같기 때문에 input event가 넘어온다.
         const onChange = (event) => {
-            setMinutes(event.target.value);
+            setAmount(event.target.value);
         };
 
-        const reset = () => {
-            setMinutes(0);
+        const onReset = () => {
+            setAmount(0);
+        }
+
+        const onFlip = () => {
+            onReset()
+            setInverted((current) => !current);
         }
 
         return (
@@ -27,13 +34,14 @@
                 <h1>Super Converter</h1>
                 <div>
                     <label htmlFor="minutes">Minutes</label>
-                    <input value={minutes} id="minutes" placeholder="Minutes" type="number" onChange={onChange}/>
+                    <input value={inverted ? amount * 60 : amount} id="minutes" placeholder="Minutes" type="number" onChange={onChange} disabled={inverted}/>
                 </div>
                 <div>
                     <label htmlFor="hours">Hours</label>
-                    <input value={Math.round(minutes / 60)} id="hours" placeholder="Hours" type="number"/>
+                    <input value={inverted ? amount : Math.round(amount / 60)} id="hours" placeholder="Hours" type="number" onChange={onChange} disabled={!inverted}/>
                 </div>
-                <button onClick={reset}>Reset</button>
+                <button onClick={onReset}>Reset</button>
+                <button onClick={onFlip}>{inverted ? "Turn back" : "Inverted"}</button>
             </div>
         )
     }
