@@ -11,28 +11,34 @@
 <!--BTN 함수에 banana라는 인자를 전달하는것과 같다.-->
 <!--props는 첫번째 인자가 전부이다. props는 json형태로 전달된다.-->
 <!--props는 오브젝트라 {banana} 처럼 축약사용이 가능하다.-->
+<!--state 변경되면 re-render 된다. 이게 리액트의 약속이다.-->
+<!--하지만 state가 변경되지 않은것도 변경된다. 왜? App의 state가 변경된것이기 대문이다. 따라서 자식 컴포넌트들도 re-render됨-->
 
 <script type="text/babel">
 
 
-
-
-    function Btn({text, big}){
-        return <button style={{
+    function Btn({text, chnageValue}){
+        console.log(text, "was rendered");
+        return <button
+            onClick={chnageValue}
+            style={{
             backgroundColor:"tomato",
             color:"white",
             padding:"10 px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize: big ? 18 : 16,
         }}>{text}</button>;
     }
+    const MemorizedBtn = React.memo(Btn);
+
     function App() {
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Changes");
 
         return (
             <div>
-                <Btn text="Save Change" big={true}/>
-                <Btn text="Continue" big={false}/>
+                <MemorizedBtn text={value} chnageValue={changeValue}/>
+                <MemorizedBtn text="Continue"/>
             </div>
         );
     }
