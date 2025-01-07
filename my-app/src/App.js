@@ -7,22 +7,49 @@ import {useState, useEffect} from "react"
 // 그래서 나온게 useEffect 이다.
 // useEffect의 첫번째인자에 한번만 실행될 함수를 넣어준다.
 
+// useEffect(() => {
+//     console.log("SEARCH FOR", keyword);
+// }, [keyworkd]);
+//  위 코드는 keyword state가 변경될때만 리로딩된다. 그래서 빈 배열을 주면 딱 1번만 리로드된다. 리액트가 지켜보고 있지 않으니까.
+
 function App() {
 
     const [counter, setValue] = useState(0);
+    const [keyword, setKeyword] = useState("");
 
     const onClick = () => {
         setValue((prev) => prev + 1);
     }
+
+    const onChange = (event) => {
+        setKeyword(event.target.value);
+    }
     console.log("i run all the time");
 
     const iRunOnlyOne = () => {
-        console.log("CALL THE API....");
+        console.log("I run only once.");
     }
 
     useEffect(iRunOnlyOne, []);
+    useEffect(() => {
+        if (keyword !== "" && keyword.length > 5) {
+            console.log("SEARCH FOR", keyword);
+        }
+        console.log ("I run when 'keyword' change")
+    }, [keyword]);
+
+    useEffect(() => {
+
+        console.log ("I run when 'counter' change")
+    }, [counter]);
+
     return (
         <div>
+            <input
+                value={keyword}
+                onChange={onChange}
+                type="text"
+                placeholder="Search here..."/>
             <h1>{counter}</h1>
             <button onClick={onClick}>click me</button>
 
