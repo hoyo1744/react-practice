@@ -12,47 +12,60 @@ import {useState, useEffect} from "react"
 // }, [keyworkd]);
 //  위 코드는 keyword state가 변경될때만 리로딩된다. 그래서 빈 배열을 주면 딱 1번만 리로드된다. 리액트가 지켜보고 있지 않으니까.
 
-function App() {
+// 자바스크립트쓸때는 {}를 붙여야함.
 
-    const [counter, setValue] = useState(0);
-    const [keyword, setKeyword] = useState("");
+// function Hello(){
+//     useEffect(() => {
+//         console.log('Im Here!');
+//     }, [])
+//
+//     return <h1>
+//         Hello
+//     </h1>
+// }
+//  위코드에서 useEffect는 마치 생성자처럼 동작하는구나. 그럼 소멸자처럼 동작하는것도 있겟군?
+
+
+// function Hello(){
+//     useEffect(() => {
+//         console.log("created :) ");
+//         return () => {
+//             console.log("destroyed :) ");
+//         }
+//     }, [])
+//
+//     return <h1>
+//         Hello
+//     </h1>;
+// }
+//  위코드에서 destroyted 부분을 cleanup function이라고 함, 소멸자 역할
+
+function App() {
+    const [showing, setShwoing] = useState(false);
 
     const onClick = () => {
-        setValue((prev) => prev + 1);
+        setShwoing((prev) => !prev);
     }
 
-    const onChange = (event) => {
-        setKeyword(event.target.value);
+
+    function Hello(){
+
+        useEffect(() => {
+            console.log("hi :)");
+            return function(){
+                console.log("by :(");
+            }
+        }, []);
+
+        return <h1>
+            Hello
+        </h1>;
     }
-    console.log("i run all the time");
-
-    const iRunOnlyOne = () => {
-        console.log("I run only once.");
-    }
-
-    useEffect(iRunOnlyOne, []);
-    useEffect(() => {
-        if (keyword !== "" && keyword.length > 5) {
-            console.log("SEARCH FOR", keyword);
-        }
-        console.log ("I run when 'keyword' change")
-    }, [keyword]);
-
-    useEffect(() => {
-
-        console.log ("I run when 'counter' change")
-    }, [counter]);
 
     return (
         <div>
-            <input
-                value={keyword}
-                onChange={onChange}
-                type="text"
-                placeholder="Search here..."/>
-            <h1>{counter}</h1>
-            <button onClick={onClick}>click me</button>
-
+            {showing ? <Hello/> : null}
+            <button onClick={onClick}> {showing ? "Hide" : "Show"}</button>
         </div>
     );
 }
