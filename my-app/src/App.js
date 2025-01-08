@@ -48,41 +48,37 @@ import {useState, useEffect} from "react"
 // set 함수는 2가지 옵션이 있다. 단순히 값을 전달하거나 함수는 전달하거나!
 // 7-1은 todo List를 자바스크립트를 이용해서 컴포넌트로 표현하는것
 
+// 7-2 아래의 코드는 api를 요청해서 결과를 json을 만들고 console.log를 찍는코드
+// fetch("https://api.coinpaprika.com/v1/tickers")
+//     .then( (response) => response.json())
+//     .then( (json) => console.log(json));
+
 function App() {
-    const [toDo, setToDo] = useState("");
-    const [toDos, setToDos] = useState([]);
 
-    const onChange = (event) => {
-        setToDo(event.target.value);
-    }
+    const [loading, setLoading] = useState(true);
 
+    const [coins, setCoins] = useState([]);
+    useEffect(() => {
+        fetch("https://api.coinpaprika.com/v1/tickers")
+            .then( (response) => response.json())
+            .then( (json) => {
+                setCoins(json);
+                setLoading(false);
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        if (toDo === "") {
-            return;
-        }
-        setToDo("");
-        console.log(toDo);
-        setToDos((currentArray) => [toDo, ...currentArray])
-    }
+            });
 
-    console.log(toDos);
+    }, []);
 
     return (
 
         <div>
-            <h1>
-                My to Dos ({toDos.length})
-            </h1>
-            <form onSubmit={onSubmit}>
-                <input onChange={onChange} value={toDo} type="text" placeholder="write your to do...."/>
-                <button>Add To Do</button>
-            </form>
-            <hr/>
-            <ul>
-                {toDos.map((item, index) => <li key={index}>{item}</li>)}
-            </ul>
+            <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+            {loading? <strong>Loading...</strong> :
+                (<select>
+                {coins.map((coin) => <option >{coin.name} ({coin.symbol}) : {coin.quotes.USD.price} USD</option>)}
+            </select>)
+            }
+
         </div>);
 
 
