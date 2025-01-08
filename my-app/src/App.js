@@ -39,35 +39,44 @@ import {useState, useEffect} from "react"
 //     </h1>;
 // }
 //  위코드에서 destroyted 부분을 cleanup function이라고 함, 소멸자 역할
+// 7-0
+// event.preventDefault();은 form 이 새로고침되는걸 막음.
+// setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함.
+// setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함. ==> setToDos(function(currentArray){[toDo, ...currentArray}); 와 똑같다.
 
 function App() {
-    const [showing, setShwoing] = useState(false);
+    const [toDo, setToDo] = useState("");
+    const [toDos, setToDos] = useState([]);
 
-    const onClick = () => {
-        setShwoing((prev) => !prev);
+    const onChange = (event) => {
+        setToDo(event.target.value);
     }
 
 
-    function Hello(){
 
-        useEffect(() => {
-            console.log("hi :)");
-            return function(){
-                console.log("by :(");
-            }
-        }, []);
-
-        return <h1>
-            Hello
-        </h1>;
+    const onSubmit = (event) => {
+        event.preventDefault();
+        if (toDo === "") {
+            return;
+        }
+        setToDo("");
+        console.log(toDo);
+        setToDos((currentArray) => [toDo, ...currentArray] )
     }
+
+    console.log(toDos);
 
     return (
+
         <div>
-            {showing ? <Hello/> : null}
-            <button onClick={onClick}> {showing ? "Hide" : "Show"}</button>
-        </div>
-    );
+            <form onSubmit={onSubmit}>
+                <input onChange={onChange} value={toDo} type="text" placeholder="write your to do...."/>
+                <button>Add To Do</button>
+            </form>
+
+        </div>);
+
+
 }
 
 export default App;
