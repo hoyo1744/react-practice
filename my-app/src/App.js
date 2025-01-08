@@ -69,6 +69,9 @@ function App() {
     return (
 
         <div>
+            <h1>
+                My to Dos ({toDos.length})
+            </h1>
             <form onSubmit={onSubmit}>
                 <input onChange={onChange} value={toDo} type="text" placeholder="write your to do...."/>
                 <button>Add To Do</button>
