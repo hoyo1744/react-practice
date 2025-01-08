@@ -44,6 +44,10 @@ import {useState, useEffect} from "react"
 // setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함.
 // setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함. ==> setToDos(function(currentArray){[toDo, ...currentArray}); 와 똑같다.
 
+// 7-1
+// set 함수는 2가지 옵션이 있다. 단순히 값을 전달하거나 함수는 전달하거나!
+// 7-1은 todo List를 자바스크립트를 이용해서 컴포넌트로 표현하는것
+
 function App() {
     const [toDo, setToDo] = useState("");
     const [toDos, setToDos] = useState([]);
@@ -53,7 +57,6 @@ function App() {
     }
 
 
-
     const onSubmit = (event) => {
         event.preventDefault();
         if (toDo === "") {
@@ -61,7 +64,7 @@ function App() {
         }
         setToDo("");
         console.log(toDo);
-        setToDos((currentArray) => [toDo, ...currentArray] )
+        setToDos((currentArray) => [toDo, ...currentArray])
     }
 
     console.log(toDos);
@@ -76,7 +79,10 @@ function App() {
                 <input onChange={onChange} value={toDo} type="text" placeholder="write your to do...."/>
                 <button>Add To Do</button>
             </form>
-
+            <hr/>
+            <ul>
+                {toDos.map((item, index) => <li key={index}>{item}</li>)}
+            </ul>
         </div>);
 
 
