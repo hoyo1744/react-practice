@@ -1,85 +1,52 @@
 import {useState, useEffect} from "react"
 
-// App의 state 변경될때마다 리로드된다. 만약 최초 1번만 리로드하고싶다면?
-// 그런 경우는 많지! api 호출은 딱 1번만 이루어져야하니까
-// 그럼 어떻게 해야 처음에만 로딩될까?
-// 일반적으로 sate변화되면 전부 리로드 된다. 왜냐하면 업데이트된 Value를 봐야하니까 알아서 리로드하는거임. 어떨때? State가 변경될때
-// 그래서 나온게 useEffect 이다.
-// useEffect의 첫번째인자에 한번만 실행될 함수를 넣어준다.
+// 7-2 then보다는 async await를 사용함.
+// fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year`)
+//     .then(response => response.json())
+//     .then( (json) => {
+//         setMovies(json.data.movies);
+//         setLoading(false);
+//     });
 
-// useEffect(() => {
-//     console.log("SEARCH FOR", keyword);
-// }, [keyworkd]);
-//  위 코드는 keyword state가 변경될때만 리로딩된다. 그래서 빈 배열을 주면 딱 1번만 리로드된다. 리액트가 지켜보고 있지 않으니까.
-
-// 자바스크립트쓸때는 {}를 붙여야함.
-
-// function Hello(){
-//     useEffect(() => {
-//         console.log('Im Here!');
-//     }, [])
-//
-//     return <h1>
-//         Hello
-//     </h1>
+// 아래의 코드와 같다.
+// const getMovies = async() => {
+//     const response = await fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year`);
+//     const json = await response.json();
+//     setMovies(json.data.movies);
+//     setLoading(false);
 // }
-//  위코드에서 useEffect는 마치 생성자처럼 동작하는구나. 그럼 소멸자처럼 동작하는것도 있겟군?
-
-
-// function Hello(){
-//     useEffect(() => {
-//         console.log("created :) ");
-//         return () => {
-//             console.log("destroyed :) ");
-//         }
-//     }, [])
-//
-//     return <h1>
-//         Hello
-//     </h1>;
-// }
-//  위코드에서 destroyted 부분을 cleanup function이라고 함, 소멸자 역할
-// 7-0
-// event.preventDefault();은 form 이 새로고침되는걸 막음.
-// setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함.
-// setToDos((currentArray) => [toDo, ...currentArray] ) ...은 배열추가를 의미함. ==> setToDos(function(currentArray){[toDo, ...currentArray}); 와 똑같다.
-
-// 7-1
-// set 함수는 2가지 옵션이 있다. 단순히 값을 전달하거나 함수는 전달하거나!
-// 7-1은 todo List를 자바스크립트를 이용해서 컴포넌트로 표현하는것
-
-// 7-2 아래의 코드는 api를 요청해서 결과를 json을 만들고 console.log를 찍는코드
-// fetch("https://api.coinpaprika.com/v1/tickers")
-//     .then( (response) => response.json())
-//     .then( (json) => console.log(json));
 
 function App() {
 
     const [loading, setLoading] = useState(true);
+    const [movies, setMovies] = useState([]);
+    const getMovies = async() => {
+        const response = await fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year`);
+        const json = await response.json();
+        setMovies(json.data.movies);
+        setLoading(false);
+    }
 
-    const [coins, setCoins] = useState([]);
-    useEffect(() => {
-        fetch("https://api.coinpaprika.com/v1/tickers")
-            .then( (response) => response.json())
-            .then( (json) => {
-                setCoins(json);
-                setLoading(false);
-
-            });
-
-    }, []);
-
+    useEffect( () => {
+        getMovies();
+    }, [])
     return (
-
         <div>
-            <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-            {loading? <strong>Loading...</strong> :
-                (<select>
-                {coins.map((coin) => <option >{coin.name} ({coin.symbol}) : {coin.quotes.USD.price} USD</option>)}
-            </select>)
+            {loading ?
+                <h1>Loading...</h1> :
+                <div>{movies.map(movie =>
+                    <div key={movie.id}>
+                        <img src={movie.medium_cover_image} />
+                        <h2>{movie.title}</h2>
+                        <p>{movie.summary}</p>
+                        <ul>
+                            {movie.genres.map(g => <li key={g}>{g}</li>)}
+                        </ul>
+                    </div>)}
+                </div>
             }
-
-        </div>);
+        </div>
+    );
 
 
 }
