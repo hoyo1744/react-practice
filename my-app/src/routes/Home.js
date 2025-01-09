@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import Movie from "../components/Movie";
 
 function Home(){
-
     const [loading, setLoading] = useState(true);
     const [movies, setMovies] = useState([]);
     const getMovies = async() => {
@@ -20,6 +19,7 @@ function Home(){
             {loading ?
                 <h1>Loading...</h1> : (
                     <div>{movies.map((movie) => (<Movie
+                            id={movie.id}
                             corverImg={movie.medium_cover_image}
                             title={movie.title}
                             summary={movie.summary}
